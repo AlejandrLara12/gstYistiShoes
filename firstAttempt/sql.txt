@@ -1,0 +1,84 @@
+## YistiShoes_Users
+CREATE TABLE `YistiShoesDB`.`YistiShoes_Users` 
+(
+    `YSU_userId` INT NOT NULL AUTO_INCREMENT,
+	  `YSU_userAccount` VARCHAR(50) NOT NULL,
+    `YSU_userPass` VARCHAR(100) NOT NULL,
+    `YSU_hash` VARCHAR(32) NOT NULL,
+    `YSU_userPermiso` INT NOT NULL DEFAULT 0,
+    `YSU_userName` VARCHAR(100) NOT NULL,
+    `YSU_userPictureUrl` VARCHAR(100),
+    `YSU_active` BOOL NOT NULL DEFAULT 1,
+PRIMARY KEY (`YSU_userId`) 
+);
+
+## YistiShoes_Cat_Permisos
+CREATE TABLE `YistiShoesDB`.`YistiShoes_Cat_Permisos` 
+(
+    `YSP_permisoId` INT NOT NULL AUTO_INCREMENT,
+	  `YSU_permisoNombre` VARCHAR(50) NOT NULL,
+PRIMARY KEY (`YSP_permisoId`) 
+);
+
+## YistiShoes_Cat_Estatus
+CREATE TABLE `YistiShoesDB`.`YistiShoes_Cat_Estatus` 
+(
+    `YSE_estatusId` INT NOT NULL AUTO_INCREMENT,
+	  `YSE_estatusName` VARCHAR(50) NOT NULL,
+	  `YSE_estatusCode` VARCHAR(3) NOT NULL,
+PRIMARY KEY (`YSE_estatusId`) 
+);
+
+
+CREATE TABLE `YistiShoesDB`.`YistiShoes_Cat_Modelo` (
+  `YSM_modeloId` INT NOT NULL,
+  `YSM_modeloName` VARCHAR(45) NOT NULL,
+  `YSM_modeloCode` VARCHAR(3) NULL,
+  `YSM_modeloPicUrl` VARCHAR(255) NULL,
+  PRIMARY KEY (`YSM_modeloId`),
+  UNIQUE INDEX `YSM_modeloCode_UNIQUE` (`YSM_modeloCode` ASC));
+
+  CREATE TABLE `YistiShoesDB`.`YistiShoes_Cat_Color` (
+  `YSC_colorId` INT NOT NULL,
+  `YSC_colorName` VARCHAR(45) NOT NULL,
+  `YSC_colorCode` VARCHAR(3) NULL,
+  `YSC_colorPicUrl` VARCHAR(255) NULL,
+  PRIMARY KEY (`YSC_colorId`),
+  UNIQUE INDEX `YSC_colorCode_UNIQUE` (`YSC_colorCode` ASC));
+
+  CREATE TABLE `YistiShoesDB`.`YistiShoes_Pedidos` (
+  `YSP_pedidoId` INT NOT NULL,
+  `YSP_pedidoNumeroOrden` INT NOT NULL AUTO_INCREMENT,
+  `YSP_pedidoEmbajadorAccount` VARCHAR(45) NULL,
+  `YSP_pedidoNombre` VARCHAR(150) NOT NULL,
+  `YSP_pedidoEmail` VARCHAR(45) NOT NULL,
+  `YSP_pedidoFecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `YSP_pedidoEstatus` INT NOT NULL DEFAULT 1,
+  `YSP_pedidoCantidadPares` INT NOT NULL,
+  `YSP_pedidoTotal` INT NOT NULL,
+  `YSP_confirmado` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`YSP_pedidoNumeroOrden`),
+  UNIQUE INDEX `YSP_pedidoEmbajadorAccount_UNIQUE` (`YSP_pedidoEmbajadorAccount` ASC),
+  UNIQUE INDEX `YSP_pedidoNumeroOrden_UNIQUE` (`YSP_pedidoNumeroOrden` ASC));
+
+  ALTER TABLE `YistiShoesDB`.`YistiShoes_Pedidos` 
+DROP COLUMN `YSP_confirmado`,
+DROP COLUMN `YSP_pedidoTotal`,
+DROP COLUMN `YSP_pedidoCantidadPares`,
+DROP COLUMN `YSP_pedidoEstatus`,
+DROP COLUMN `YSP_pedidoFecha`,
+DROP COLUMN `YSP_pedidoEmail`,
+DROP COLUMN `YSP_pedidoNombre`,
+DROP COLUMN `YSP_pedidoId`,
+CHANGE COLUMN `YSP_pedidoNumeroOrden` `YSP_pedidoNumeroOrden` INT(11) NOT NULL ,
+CHANGE COLUMN `YSP_pedidoEmbajadorAccount` `YSD_pedidoCantidad` INT NOT NULL ,
+ADD COLUMN `YSD_modelo` VARCHAR(45) NOT NULL AFTER `YSD_pedidoCantidad`,
+ADD COLUMN `YSD_talla` VARCHAR(45) NOT NULL AFTER `YSD_modelo`,
+ADD COLUMN `YSD_color` VARCHAR(45) NOT NULL AFTER `YSD_talla`,
+ADD COLUMN `YSD_precioUnitario` INT NOT NULL AFTER `YSD_color`,
+ADD COLUMN `YSD_idPedido` INT NOT NULL AUTO_INCREMENT AFTER `YSD_precioUnitario`,
+DROP PRIMARY KEY,
+ADD PRIMARY KEY (`YSD_idPedido`),
+DROP INDEX `YSP_pedidoEmbajadorAccount_UNIQUE` ,
+DROP INDEX `YSP_pedidoNumeroOrden_UNIQUE` , RENAME TO  `YistiShoesDB`.`YistiShoes_PedidoDetalle` ;
+

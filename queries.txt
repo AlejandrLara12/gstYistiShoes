@@ -1,0 +1,7 @@
+
+// set auto_increment value
+ALTER TABLE `YistiShoes_Embajadores` AUTO_INCREMENT=5;
+
+
+// get embajadores 
+SELECT `YSE_embId`,`YSE_embName` FROM `YistiShoes_Embajadores` WHERE `YSE_embActive` = '1';
